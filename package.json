@@ -6,7 +6,7 @@
   "types": "build/src/inde.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fuzzitdev/jsfuzz.git"
+    "url": "git@gitlab.com:gitlab-org/security-products/analyzers/fuzzers/jsfuzz.git"
   },
   "license": "Apache-2.0",
   "devDependencies": {
@@ -41,9 +41,9 @@
     "posttest": "npm run check"
   },
   "bugs": {
-    "url": "https://github.com/fuzzitdev/jsfuzz/issues"
+    "url": "https://gitlab.com/gitlab-org/security-products/analyzers/fuzzers/jsfuzz/-/issues"
   },
-  "homepage": "https://github.com/fuzzitdev/jsfuzz#readme",
+  "homepage": "https://gitlab.com/gitlab-org/security-products/analyzers/fuzzers/jsfuzz",
   "directories": {
     "example": "examples"
   },
