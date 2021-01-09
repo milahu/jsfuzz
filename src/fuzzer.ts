@@ -119,6 +119,7 @@ export class Fuzzer {
             if (m.type === WorkerMessageType.CRASH) {
                 this.writeCrash(buf);
                 this.clearIntervals();
+		process.exitCode = 1;
                 return;
             } else if (m.coverage > this.total_coverage) {
                 this.total_coverage = m.coverage;
@@ -154,6 +155,7 @@ export class Fuzzer {
             if (signal && code !== 0) {
                 console.log('Worker killed');
                 this.writeCrash(buf);
+		process.exitCode = 1;
             }
             console.log('Worker exited');
             this.clearIntervals();
