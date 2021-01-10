@@ -67,7 +67,7 @@ module.exports = {
 The next step is to download js-fuzz and then run your fuzzer
 
 ```bash
-npm i -g jsfuzz
+npm config set @gitlab-org:registry https://gitlab.com/api/v4/packages/npm/ && npm i -g @gitlab-org/jsfuzz
 jsfuzz ./examples/jpeg/fuzz.js corpus
 
 # Output:
