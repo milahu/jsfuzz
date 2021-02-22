@@ -5,4 +5,6 @@ crash-*
 corpus/*
 coverage
 .nyc_output
-
+tests*
+*.code-workspace
+.gitingore

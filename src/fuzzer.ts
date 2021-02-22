@@ -21,8 +21,9 @@ export class Fuzzer {
     private exactArtifactPath: string;
     private rssLimitMb: number;
     private timeout: number;
+    private fuzzTime: number;
     private target: string;
-    private startTime: number | undefined;
+    private startTime: number;
     private worker: ChildProcess;
     private workerRss: number;
     private rssInterval: NodeJS.Timeout | null;
@@ -42,7 +43,8 @@ export class Fuzzer {
                 timeout: number,
                 regression: boolean,
                 onlyAscii: boolean,
-                versifier: boolean) {
+                versifier: boolean,
+                fuzzTime: number) {
         this.target = target;
         this.corpus = new Corpus(dir, onlyAscii);
         this.onlyAscii = onlyAscii;
@@ -53,6 +55,8 @@ export class Fuzzer {
         this.exactArtifactPath = exactArtifactPath;
         this.rssLimitMb = rssLimitMb;
         this.timeout = timeout;
+        this.fuzzTime = fuzzTime;
+        this.startTime = Date.now();
         this.regression = regression;
         this.worker = fork(`${__dirname}/worker.js`,
             [this.target],
@@ -102,7 +106,6 @@ export class Fuzzer {
     start() {
         console.log(`#0 READ units: ${this.corpus.getLength()}`);
         this.startTime = Date.now();
-
         this.lastSampleTime = Date.now();
         let executions = 0;
         let buf = this.corpus.generateInput();
@@ -122,9 +125,15 @@ export class Fuzzer {
 		process.exitCode = 1;
                 return;
             } else if (m.coverage > this.total_coverage) {
+                
+                // begin new time if cov was changes
+                if (this.fuzzTime != 0){
+                    this.startTime = Date.now();
+                }
                 this.total_coverage = m.coverage;
                 this.corpus.putBuffer(buf);
                 this.logStats('NEW');
+                
                 if (buf.length > 0 && this.versifier) {
                     this.verse = BuildVerse(this.verse, buf);
                 }
@@ -167,7 +176,18 @@ export class Fuzzer {
         });
 
         this.pulseInterval = setInterval(() => {
+          
             this.logStats("PULSE");
+              
+            // check fuzzTime and will sent SIGINT signal if time of fuzzing is reached
+            if (this.fuzzTime !== 0) {
+                let execTime = Date.now() / 1000 - this.startTime / 1000;
+                if (execTime > this.fuzzTime) {
+                    console.log("=================================================================");
+                    console.log(`timeout of fuzzing is reached. Coverage has reached: ${this.total_coverage}`);
+                    this.worker.kill('SIGINT');
+                }
+            }
         }, 3000);
 
         this.rssInterval = setInterval(async () => {

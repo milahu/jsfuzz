@@ -11,7 +11,8 @@ function startFuzzer(argv: any) {
         argv.timeout,
         argv.regression,
         argv.onlyAscii,
-        argv.versifier);
+        argv.versifier, 
+        argv.fuzzTime);
     fuzzer.start()
 }
 
@@ -61,6 +62,11 @@ require('yargs')
         type: 'boolean',
         description: 'generate only ASCII (isprint+isspace) inputs',
         default: false,
+    })
+    .option('fuzzTime', {
+        type: 'number',
+        description: 'The time(in seconds) of fuzzing during which there are no changes in the coverage. 0 is unlim.',
+        default: 0,
     })
     .help()
     .argv;
