@@ -91,6 +91,9 @@ hookRequire((filePath) => true, (code, {filename}) => {
 // @ts-ignore
 const fuzzTargetPath = path.join(process.cwd(), process.argv[2]);
 const fuzzTargetFn = require(fuzzTargetPath).fuzz;
+if (typeof fuzzTargetFn !== "function") {
+    throw new Error(`${fuzzTargetPath} has no fuzz function exported`);
+}
 const worker = new Worker(fuzzTargetFn);
 worker.start();
 
