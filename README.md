@@ -107,6 +107,21 @@ jsfuzz tries to mimic some of the arguments and output style from [libFuzzer](ht
 More fuzz targets examples (for real and popular libraries) are located under the examples directory and
 bugs that were found using those targets are listed in the trophies section.
 
+### Supported arguments
+
+| Keyword | type  | description |
+| ------ | ------ | ----------- |
+| target | string| Path to file containing the fuzz target function |
+| dir | string     | Pass zero or more corpus directories as command line arguments. The fuzzer will read test inputs from each of these corpus directories, and any new test inputs that are generated will be written back to the first corpus directory. single files can be passed as well and will be used as seed files |
+| regression | boolean | Run the fuzzer through set of files for regression or reproduction (default: false) |
+| exact-artifact-path | string | Set exact artifact path for crashes/ooms |
+| rss-limit-mb | number | Memory usage in MB (default: 2048) |
+| timeout | number | If input takes longer then this timeout (in seconds) the process is treated as failure case (default: 30) |
+| worker | boolean | Run fuzzing worker (default: false) (hidden: true) |
+| versifier | boolean | Use versifier algorithm (good for text based protocols (default: true) |
+| only-ascii | boolean | Generate only ASCII (isprint+isspace) inputs (default: false) |
+| fuzzTime | number | The time(in seconds) of fuzzing during which there are no changes in the coverage. 0 is unlimited (default: 0) | 
+
 ### Coverage
 
 Coverage in Istanbul/NYC format is written to .nyc_output/out.json It can be viewer with `nyc` cli. For example:
