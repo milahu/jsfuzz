@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {Fuzzer} from './fuzzer';
-import yargs from 'yargs';
+import * as yargs from 'yargs';
 
 function startFuzzer(argv: any) {
     const fuzzer = new Fuzzer(
@@ -16,8 +16,7 @@ function startFuzzer(argv: any) {
     fuzzer.start()
 }
 
-require('yargs')
-    .scriptName("jsfuzz")
+yargs.scriptName("jsfuzz")
     .command('$0 <target> [dir..]', 'start the fuzzer', (yargs: any) => {
         yargs.positional('target', {
             describe: 'Path to file containing the fuzz target function',
