@@ -136,6 +136,12 @@ This will save the html report to `coverage` directory
 
 Currently this library is also ported to python via [pythonfuzz](https://github.com/fuzzitdev/pythonfuzz)
 
+## Release Process
+
+1. Bump the release version in [package.json](package.json).
+2. The release is automatically pushed to [jsfuzz repository](https://gitlab.com/gitlab-org/security-products/analyzers/fuzzers/jsfuzz)
+via `.gitlab-ci.yaml` `deploy` stage. This is triggered after creating the tag.
+
 ## Credits & Acknowledgments
 
 jsfuzz logic is heavily based on [go-fuzz](https://github.com/dvyukov/go-fuzz) originally developed by [Dmitry Vyukov's](https://twitter.com/dvyukov).
